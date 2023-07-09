@@ -4,13 +4,13 @@ from classifier import classifier
 # TODO 3: Define classify_images function below, specifically replace the None
 #       below by the function definition of the classify_images function. 
 #       Notice that this function doesn't return anything because the 
-#       results_dic dictionary that is passed into the function is a mutable 
+#       res_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
-def classify_images(images_dir, results_dic, model):
-    for key in results_dic:
+def classify_images(img_dir, res_dic, model):
+    for key in res_dic:
         model_label = ""
-        classified = classifier(images_dir+'/'+key,model)
+        classified = classifier(img_dir+'/'+key,model)
  
         lowPetImage = classified.lower()
         
@@ -26,13 +26,13 @@ def classify_images(images_dir, results_dic, model):
         #print("Classifier: " + lowPetImage)
         model_label = lowPetImage
         
-        #results_dic[key].append(model_label)
-        truth = results_dic[key][0]
+        #res_dic[key].append(model_label)
+        truth = res_dic[key][0]
         
         # Classifier Label
         if truth in model_label:
-           results_dic[key].extend((model_label,1))
+           res_dic[key].extend((model_label,1))
         else:
-           results_dic[key].extend((model_label,0))
+           res_dic[key].extend((model_label,0))
         
-    print(results_dic)
+    print(res_dic)
