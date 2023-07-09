@@ -11,7 +11,7 @@
 #          is found to exist within this list - the label is of-a-dog, otherwise
 #          the label isn't of a dog. 
 #         This function inputs:
-#            -The results dictionary as results_dic within adjust_results4_isadog 
+#            -The results dictionary as res_dic within adjust_results4_isadog 
 #             function and results for the function call within main.
 #            -The text file with dog names as dogfile within adjust_results4_isadog
 #             function and in_arg.dogfile for the function call within main. 
@@ -27,17 +27,17 @@
 # TODO 4: Define adjust_results4_isadog function below, specifically replace the None
 #       below by the function definition of the adjust_results4_isadog function. 
 #       Notice that this function doesn't return anything because the 
-#       results_dic dictionary that is passed into the function is a mutable 
+#       res_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
-def adjust_results4_isadog(results_dic, dogfile):
+def adjust_results4_isadog(res_dic, dogfile):
     """
     Adjusts the results dictionary to determine if classifier correctly 
     classified images 'as a dog' or 'not a dog' especially when not a match. 
     Demonstrates if model architecture correctly classifies dog images even if
     it gets dog breed wrong (not a match).
     Parameters:
-      results_dic - Dictionary with 'key' as image filename and 'value' as a 
+      res_dic - Dictionary with 'key' as image filename and 'value' as a 
                     List. Where the list will contain the following items: 
                   index 0 = pet image label (string)
                   index 1 = classifier label (string)
@@ -58,12 +58,12 @@ def adjust_results4_isadog(results_dic, dogfile):
                associated with that breed (ex. maltese dog, maltese terrier, 
                maltese) (string - indicates text file's filename)
     Returns:
-           None - results_dic is mutable data type so no return needed.
+           None - res_dic is mutable data type so no return needed.
     """           
     dognames_dic = dict()
     
-    with open(dogfile, "r") as infile:
-        line = infile.readline()
+    with open(dogfile, "r") as inp:
+        line = inp.readline()
         
         while line != "":
             line = line.rstrip()
@@ -72,18 +72,18 @@ def adjust_results4_isadog(results_dic, dogfile):
             else:
                 dognames_dic[line] = 1
                 
-            line = infile.readline()    
+            line = inp.readline()    
 
-        # Check to see if results_dic items are dogs
-        for key in results_dic:
-            if results_dic[key][0] in dognames_dic:
-                if results_dic[key][1] in dognames_dic:
-                    results_dic[key].extend((1, 1))
+        # Check to see if res_dic items are dogs
+        for key in res_dic:
+            if res_dic[key][0] in dognames_dic:
+                if res_dic[key][1] in dognames_dic:
+                    res_dic[key].extend((1, 1))
                 else:
-                    results_dic[key].extend((1,0))
+                    res_dic[key].extend((1,0))
             else:
-                if results_dic[key][1] in dognames_dic:
-                    results_dic[key].extend((0,1))
+                if res_dic[key][1] in dognames_dic:
+                    res_dic[key].extend((0,1))
                 else:
-                    results_dic[key].extend((0,0))
+                    res_dic[key].extend((0,0))
     None
