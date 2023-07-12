@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# */AIPND-revision/intropyproject-classify-pet-images/adjust_results4_isadog.py
+#                                                                             
+# PROGRAMMER: M.Jyothika
+# DATE CREATED: 11/07/2023                            
+# REVISED DATE: 
 # PURPOSE: Create a function adjust_results4_isadog that adjusts the results 
 #          dictionary to indicate whether or not the pet image label is of-a-dog, 
 #          and to indicate whether or not the classifier image label is of-a-dog.
@@ -11,7 +18,7 @@
 #          is found to exist within this list - the label is of-a-dog, otherwise
 #          the label isn't of a dog. 
 #         This function inputs:
-#            -The results dictionary as res_dic within adjust_results4_isadog 
+#            -The results dictionary as results_dic within adjust_results4_isadog 
 #             function and results for the function call within main.
 #            -The text file with dog names as dogfile within adjust_results4_isadog
 #             function and in_arg.dogfile for the function call within main. 
@@ -27,17 +34,17 @@
 # TODO 4: Define adjust_results4_isadog function below, specifically replace the None
 #       below by the function definition of the adjust_results4_isadog function. 
 #       Notice that this function doesn't return anything because the 
-#       res_dic dictionary that is passed into the function is a mutable 
+#       results_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
-def adjust_results4_isadog(res_dic, dogfile):
+def adjust_results4_isadog(results_dic, dogfile):
     """
     Adjusts the results dictionary to determine if classifier correctly 
     classified images 'as a dog' or 'not a dog' especially when not a match. 
     Demonstrates if model architecture correctly classifies dog images even if
     it gets dog breed wrong (not a match).
     Parameters:
-      res_dic - Dictionary with 'key' as image filename and 'value' as a 
+      results_dic - Dictionary with 'key' as image filename and 'value' as a 
                     List. Where the list will contain the following items: 
                   index 0 = pet image label (string)
                   index 1 = classifier label (string)
@@ -58,32 +65,25 @@ def adjust_results4_isadog(res_dic, dogfile):
                associated with that breed (ex. maltese dog, maltese terrier, 
                maltese) (string - indicates text file's filename)
     Returns:
-           None - res_dic is mutable data type so no return needed.
+           None - results_dic is mutable data type so no return needed.
     """           
     dognames_dic = dict()
-    
-    with open(dogfile, "r") as inp:
-        line = inp.readline()
-        
+    with open(dogfile, "r") as infile:
+        line = infile.readline()
         while line != "":
-            line = line.rstrip()
-            if line in dognames_dic:
-                None
+            line=line.strip()
+            if line not in dognames_dic:
+                dognames_dic[line]=1
+            line = infile.readline()
+    for key in results_dic:
+        if results_dic[key][0] in dognames_dic:
+            
+            if results_dic[key][1] in dognames_dic:
+                results_dic[key].extend((1, 1))
             else:
-                dognames_dic[line] = 1
-                
-            line = inp.readline()    
-
-        # Check to see if res_dic items are dogs
-        for key in res_dic:
-            if res_dic[key][0] in dognames_dic:
-                if res_dic[key][1] in dognames_dic:
-                    res_dic[key].extend((1, 1))
-                else:
-                    res_dic[key].extend((1,0))
+                results_dic[key].extend((1, 0))
+        else:
+            if results_dic[key][1] in dognames_dic:
+                results_dic[key].extend((0, 1))
             else:
-                if res_dic[key][1] in dognames_dic:
-                    res_dic[key].extend((0,1))
-                else:
-                    res_dic[key].extend((0,0))
-    None
+                results_dic[key].extend((1, 1))
